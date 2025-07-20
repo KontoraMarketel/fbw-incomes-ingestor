@@ -22,13 +22,13 @@ MINIO_BUCKET = os.getenv("MINIO_BUCKET")
 async def handle_message(msg):
     task_id = msg["task_id"]
     api_token = msg["wb_token"]
-    init_date = msg["ts"]
+    ts = msg["ts"]
 
     logging.info(f"Start processing task {task_id}")
 
-    data = await fetch_data(api_token, init_date)
+    data = await fetch_data(api_token, ts)
     filename = "fbw_incomes.json"
-    prefix = f"{init_date}/{task_id}/"
+    prefix = f"{ts}/{task_id}/"
     minio_key = prefix + filename
 
     await upload_to_minio(
@@ -44,7 +44,7 @@ async def handle_message(msg):
 
     return {
         "task_id": task_id,
-        "load_date": init_date,
+        "load_date": ts,
         "minio_key": minio_key
     }
 
