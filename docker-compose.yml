@@ -4,10 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      KAFKA_INGEST_COMMISSIONS_TASKS_TOPIC: ingest-fbw-incomes-tasks
-      KAFKA_STG_COMMISSIONS_TOPIC: stg-fbw-incomes-tasks
+      KAFKA_INGEST_FBW_INCOMES_TASKS_TOPIC: ingest-fbw-incomes-tasks
+      KAFKA_STG_FBW_INCOMES_TOPIC: stg-fbw-incomes-tasks
       KAFKA_CONSUMER_GROUP: fbw-incomes-ingestor
-      KAFKA_PROCESS_DATA_TASKS_TOPIC: process-tasks
       KAFKA_BOOTSTRAP_SERVERS: kafka-compose-kafka-broker-1:9092
       MINIO_ENDPOINT: http://minio:9000
       MINIO_ACCESS_KEY: minioadmin
