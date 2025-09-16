@@ -3,7 +3,6 @@ import logging
 from datetime import datetime, timedelta
 
 import aiohttp
-import json
 
 
 async def fetch_data(api_token: str, ts: str) -> str:
@@ -25,15 +24,17 @@ async def fetch_data(api_token: str, ts: str) -> str:
             all_incomes.extend(res)
             datefrom = res[-1]["lastChangeDate"]
 
-    return json.dumps(all_incomes, indent=2, ensure_ascii=False)
+    return all_incomes
 
 
 async def fetch_page_with_retry(session, url, params):
     while True:
         async with session.get(url, params=params) as response:
             if response.status == 429:
-                retry_after = int(response.headers.get('X-Ratelimit-Retry', 10))
-                logging.warning(f"Rate limited (429). Retrying after {retry_after} seconds...")
+                retry_after = int(response.headers.get("X-Ratelimit-Retry", 10))
+                logging.warning(
+                    f"Rate limited (429). Retrying after {retry_after} seconds..."
+                )
                 await asyncio.sleep(retry_after)
                 continue
 
