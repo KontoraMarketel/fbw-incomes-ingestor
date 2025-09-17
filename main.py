@@ -50,11 +50,7 @@ async def handle_message(msg, minio_pool: MinioClientPool):
 
     logging.info(f"Task {task_id} completed successfully.")
 
-    return {
-        "task_id": task_id,
-        "load_date": ts,
-        "minio_key": minio_key
-    }
+    return {"task_id": task_id, "ts": ts, "minio_key": minio_key}
 
 
 async def process_and_produce(msg_value, producer, minio_pool: MinioClientPool):
@@ -100,7 +96,9 @@ async def main():
     tasks = set()
     try:
         async for msg in consumer:
-            task = asyncio.create_task(process_and_produce(msg.value, producer, minio_pool))
+            task = asyncio.create_task(
+                process_and_produce(msg.value, producer, minio_pool)
+            )
             tasks.add(task)
             task.add_done_callback(tasks.discard)
     finally:
