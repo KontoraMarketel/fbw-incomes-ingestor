@@ -10,19 +10,21 @@ async def fetch_data(api_token: str, ts: str) -> str:
     headers = {"Authorization": api_token}
     all_incomes = []
 
-    dt_ts = datetime.fromisoformat(ts)
-    datefrom = (dt_ts - timedelta(days=1)).strftime("%Y-%m-%d")
+    date_from = ts
 
     async with aiohttp.ClientSession(headers=headers) as session:
         while True:
-            params = {"dateFrom": datefrom}
+            params = {"dateFrom": date_from}
             res = await fetch_page_with_retry(session, url, params)
 
             if not res:
                 break
 
             all_incomes.extend(res)
-            datefrom = res[-1]["lastChangeDate"]
+            if res:
+                date_from = res[-1]["lastChangeDate"]
+            else:
+                break
 
     return all_incomes
 
