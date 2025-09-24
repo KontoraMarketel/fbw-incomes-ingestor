@@ -14,7 +14,7 @@ async def fetch_data(api_token: str, ts: str) -> str:
 
     async with aiohttp.ClientSession(headers=headers) as session:
         while True:
-            params = {"date_From": date_from}
+            params = {"dateFrom": date_from}
             res = await fetch_page_with_retry(session, url, params)
 
             if not res:
