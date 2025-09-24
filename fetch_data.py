@@ -1,7 +1,7 @@
 import asyncio
 import logging
 from datetime import datetime, timedelta
-
+from utils import chunked, get_yesterday_bounds_msk
 import aiohttp
 
 
@@ -10,8 +10,7 @@ async def fetch_data(api_token: str, ts: str) -> str:
     headers = {"Authorization": api_token}
     all_incomes = []
 
-    dt_ts = datetime.fromisoformat(ts)
-    datefrom = (dt_ts - timedelta(days=1)).strftime("%Y-%m-%d")
+    date_from, date_to = get_yesterday_bounds_msk(ts)
 
     async with aiohttp.ClientSession(headers=headers) as session:
         while True:
