@@ -1,9 +1,11 @@
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
-def chunked (data, size):
-    for i in range(0, len (data), size) :
-        yield data [i:i + size]
+
+def chunked(data, size):
+    for i in range(0, len(data), size):
+        yield data[i : i + size]
+
 
 def get_yesterday_bounds_msk(ts: str):
     """
