@@ -1,7 +1,6 @@
 import asyncio
 import logging
-from datetime import datetime, timedelta
-from utils import chunked, get_yesterday_bounds_msk
+from utils import get_yesterday_bounds_msk
 import aiohttp
 
 
@@ -14,7 +13,7 @@ async def fetch_data(api_token: str, ts: str) -> str:
 
     async with aiohttp.ClientSession(headers=headers) as session:
         while True:
-            params = {"dateFrom": date_from}
+            params = {"dateFrom": str(date_from)}
             res = await fetch_page_with_retry(session, url, params)
 
             if not res:
